@@ -18,7 +18,7 @@ jobs:
       run: sudo npm install -g snyk snyk-to-html
 
     - name: Authenticate Snyk
-      run: snyk auth $KEY_ACCESS_SNYK
+      run: snyk auth ${{ secrets.KEY_ACCESS_SNYK }}
 
     - name: Run Snyk Code Scan
       run: snyk code test --json > sast-snyk-report.json || true
