@@ -1,0 +1,10 @@
+services:
+  exam-app-frontend:
+    image: thien19012004/exam-app-frontend:latest
+    container_name: exam-app-frontend
+    ports:
+      - "5005:5005"
+    environment:
+      - PORT=5005
+    restart: always
+ 
