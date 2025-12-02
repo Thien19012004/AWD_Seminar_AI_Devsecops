@@ -42,7 +42,40 @@ jobs:
         path: sast-snyk-report.html
         retention-days: 7   # bạn có thể đổi
 
+  sca:
+    runs-on: self-hosted
 
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    - name: Install Snyk and snyk-to-html
+      run: sudo npm install -g snyk snyk-to-html
+
+    - name: Authenticate Snyk
+      run: snyk auth ${{ secrets.KEY_ACCESS_SNYK }}
+
+    - name: Run Snyk Code Scan
+      run: snyk test --json > sca-snyk-report.json || true
+
+    - name: Convert Snyk Report to HTML
+      run: cat sca-snyk-report.json | snyk-to-html -o sca-snyk-report.html || true
+
+    # --- NEW: Upload JSON report ---
+    - name: Upload Snyk JSON Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: snyk-sca-json-report
+        path: sca-snyk-report.json
+        retention-days: 7   # bạn có thể đổi
+
+    # --- NEW: Upload HTML report ---
+    - name: Upload Snyk HTML Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: snyk-sca-html-report
+        path: sca-snyk-report.html
+        retention-days: 7   # bạn có thể đổi
 
   call_build_and_push:
     uses: ./.github/workflows/build_and_push.yml
@@ -53,3 +86,38 @@ jobs:
     secrets: 
       DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
       DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
+
+  image-scan:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    - name: Install Snyk and snyk-to-html
+      run: sudo npm install -g snyk snyk-to-html
+
+    - name: Authenticate Snyk
+      run: snyk auth ${{ secrets.KEY_ACCESS_SNYK }}
+
+    - name: Run Snyk Code Scan
+      run: snyk container test --json ${{ secrets.DOCKERHUB_USER }}/exam-app-frontend:latest > image-snyk-report.json || true
+
+    - name: Convert Snyk Report to HTML
+      run: cat image-snyk-report.json | snyk-to-html -o image-snyk-report.html || true
+
+    # --- NEW: Upload JSON report ---
+    - name: Upload Snyk JSON Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: snyk-image-json-report
+        path: image-snyk-report.json
+        retention-days: 7   # bạn có thể đổi
+
+    # --- NEW: Upload HTML report ---
+    - name: Upload Snyk HTML Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: snyk-image-html-report
+        path: image-snyk-report.html
+        retention-days: 7   # bạn có thể đổi
