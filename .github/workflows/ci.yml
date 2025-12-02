@@ -10,7 +10,7 @@ jobs:
   call_build_and_push:
     uses: ./.github/workflows/build_and_push.yml
     with:
-      service_name: 'nike_shopping'
+      service_name: 'exam-app-frontend'
       dockerfile_path: 'Dockerfile'
       context_path: './'
     secrets: 
