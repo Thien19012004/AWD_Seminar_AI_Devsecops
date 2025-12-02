@@ -7,6 +7,43 @@ on:
     branches:
       - main
 jobs:
+  sast:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    - name: Install Snyk and snyk-to-html
+      run: npm install -g snyk snyk-to-html
+
+    - name: Authenticate Snyk
+      run: snyk auth $KEY_ACCESS_SNYK
+
+    - name: Run Snyk Code Scan
+      run: snyk code test --json > sast-snyk-report.json || true
+
+    - name: Convert Snyk Report to HTML
+      run: cat sast-snyk-report.json | snyk-to-html -o sast-snyk-report.html || true
+
+    # --- NEW: Upload JSON report ---
+    - name: Upload Snyk JSON Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: snyk-sast-json-report
+        path: sast-snyk-report.json
+        retention-days: 7   # bạn có thể đổi
+
+    # --- NEW: Upload HTML report ---
+    - name: Upload Snyk HTML Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: snyk-sast-html-report
+        path: sast-snyk-report.html
+        retention-days: 7   # bạn có thể đổi
+
+
+
   call_build_and_push:
     uses: ./.github/workflows/build_and_push.yml
     with:
