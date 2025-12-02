@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install Snyk and snyk-to-html
-      run: npm install -g snyk snyk-to-html
+      run: sudo npm install -g snyk snyk-to-html
 
     - name: Authenticate Snyk
       run: snyk auth $KEY_ACCESS_SNYK
