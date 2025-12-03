@@ -38,17 +38,20 @@ jobs:
             -r dast-zap-report.html \
             -J dast-zap-report.json || true
 
+          cp /zap/wrk/dast-zap-report.html  ${GITHUB_WORKSPACE}/dast-zap-report.html
+          cp /zap/wrk/dast-zap-report.json  ${GITHUB_WORKSPACE}/dast-zap-report.json
+
       - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: dast-zap-html-report
-          path: dast-zap-report.html
+          path: ${GITHUB_WORKSPACE}/dast-zap-report.html
           retention-days: 7
 
       - name: Upload ZAP JSON Report
         uses: actions/upload-artifact@v4
         with:
           name: dast-zap-json-report
-          path: dast-zap-report.json
+          path: ${GITHUB_WORKSPACE}/dast-zap-report.json
           retention-days: 7
 
