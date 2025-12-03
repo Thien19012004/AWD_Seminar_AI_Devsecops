@@ -3,7 +3,7 @@ services:
     image: thien19012004/exam-app-frontend:latest
     container_name: exam-app-frontend
     ports:
-      - "8080:80"
+      - "7000:80"
     restart: always
     labels:
       - "traefik.http.routers.exam-app-frontend-secure.rule=Host(`exam-app.lptdevops.website`)"
