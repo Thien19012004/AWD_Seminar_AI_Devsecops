@@ -112,6 +112,24 @@ jobs:
       DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
       DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
 
+  notify-n8n:
+    needs: call_build_and_push
+    runs-on: self-hosted
+
+    steps:
+      - name: Notify n8n via webhook
+        env:
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref }}
+          SHA: ${{ github.sha }}
+          N8N_WEBHOOK: ${{ secrets.N8N_WEBHOOK }}
+        run: |
+          payload="{\"repository\":\"$REPO\",\"ref\":\"$REF\",\"commit\":\"$SHA\",\"status\":\"success\"}"
+          curl -s -X POST "https://thien1234.app.n8n.cloud/webhook/github-build-event" \
+            -H "Content-Type: application/json" \
+            -H "X-N8N-WEBHOOK: $N8N_WEBHOOK" \
+            -d "$payload" || true
+
   image-scan:
     needs: call_build_and_push
     runs-on: self-hosted
@@ -147,3 +165,4 @@ jobs:
         name: snyk-image-html-report
         path: image-snyk-report.html
         retention-days: 7   # bạn có thể đổi
+
