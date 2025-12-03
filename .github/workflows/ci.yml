@@ -8,7 +8,7 @@ on:
       - main
 jobs:
   secret-scan: 
-    runs-on: self-hosted  
+    runs-on: self-hosted
     steps:
     - name: Install gitleaks
       run: sudo apt update && sudo apt install gitleaks
@@ -30,6 +30,7 @@ jobs:
         path: secret-scan-gitleak-report.json
         retention-days: 7   # bạn có thể đổi
   sast:
+    needs: secret-scan
     runs-on: self-hosted
 
     steps:
@@ -65,6 +66,7 @@ jobs:
         retention-days: 7   # bạn có thể đổi
 
   sca:
+    needs: sast
     runs-on: self-hosted
 
     steps:
@@ -100,6 +102,7 @@ jobs:
         retention-days: 7   # bạn có thể đổi
 
   call_build_and_push:
+    needs: sca
     uses: ./.github/workflows/build_and_push.yml
     with:
       service_name: 'exam-app-frontend'
@@ -110,6 +113,7 @@ jobs:
       DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
 
   image-scan:
+    needs: call_build_and_push
     runs-on: self-hosted
 
     steps:
