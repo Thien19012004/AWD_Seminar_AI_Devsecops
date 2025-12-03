@@ -36,8 +36,8 @@ jobs:
 
           docker run  -v $(pwd):/zap/wrk -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
             -t https://exam-app.lptdevops.website \
-            -r /zap/wrk/dast-zap-report.html \
-            -J /zap/wrk/dast-zap-report.json || true
+            -r dast-zap-report.html \
+            -J dast-zap-report.json || true
 
           pwd
           ls
