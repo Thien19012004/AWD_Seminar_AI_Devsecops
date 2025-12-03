@@ -7,6 +7,28 @@ on:
     branches:
       - main
 jobs:
+  secret-scan: 
+    runs-on: self-hosted  
+    steps:
+    - name: Install gitleaks
+      run: sudo apt update && sudo apt install gitleaks
+
+    - name: Run Gitleaks Secret Scan
+      run: |
+        gitleaks detect \
+        --source="./" \
+        --verbose \
+        --log-opts="--all" \
+        --report-format=json \
+        --report-path=secret-scan-gitleak-report.json || true
+
+    # --- NEW: Upload JSON report ---
+    - name: Upload Gitleaks JSON Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: secret-scan-gitleak-report
+        path: secret-scan-gitleak-report.json
+        retention-days: 7   # bạn có thể đổi
   sast:
     runs-on: self-hosted
 
