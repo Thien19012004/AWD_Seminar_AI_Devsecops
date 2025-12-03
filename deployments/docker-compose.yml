@@ -16,8 +16,8 @@ services:
       - "traefik.http.routers.exam-app-frontend.middlewares=redirect-to-https"  
       - "traefik.http.services.exam-app-frontend.loadbalancer.server.port=80"
     networks:
-      - traefik_default
+      - PrviNetwork
 
 networks:
-  traefik_default:
-    driver: bridge
+  PrviNetwork:
+    external: true
