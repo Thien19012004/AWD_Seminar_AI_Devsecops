@@ -38,6 +38,9 @@ jobs:
             -r /zap/wrk/dast-zap-report.html \
             -J /zap/wrk/dast-zap-report.json || true
 
+          pwd
+          ls
+
       - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
         with:
@@ -51,4 +54,3 @@ jobs:
           name: dast-zap-json-report
           path: dast-zap-report.json
           retention-days: 7
-
