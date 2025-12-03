@@ -22,3 +22,33 @@ jobs:
           docker-compose down
           docker-compose pull
           docker-compose up -d
+
+  dast:
+    needs: deploy
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run ZAP DAST Scan
+        run: |
+          docker run -t owasp/zap2docker-stable zap-baseline.py \
+            -t http://localhost:3000 \
+            -r dast-zap-report.html \
+            -J dast-zap-report.json || true
+
+      - name: Upload ZAP HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dast-zap-html-report
+          path: dast-zap-report.html
+          retention-days: 7
+
+      - name: Upload ZAP JSON Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dast-zap-json-report
+          path: dast-zap-report.json
+          retention-days: 7
+
