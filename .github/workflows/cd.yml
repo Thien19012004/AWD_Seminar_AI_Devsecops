@@ -34,7 +34,7 @@ jobs:
       - name: Run ZAP DAST Scan
         run: |
           docker run -t owasp/zap2docker-stable zap-baseline.py \
-            -t http://localhost:80 \
+            -t https://exam-app.lptdevops.website \
             -r dast-zap-report.html \
             -J dast-zap-report.json || true
 
