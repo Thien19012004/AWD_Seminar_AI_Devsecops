@@ -25,7 +25,7 @@ function ExamList() {
     handleExamList();
   }, []);
 
-  // fetch exam list every 2 minutes--hhqaaa--------------------------
+  // fetch exam list every 2 minutes-đsđsd-hhqaaa--------------------------
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     handleExamList();
