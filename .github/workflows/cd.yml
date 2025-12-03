@@ -33,7 +33,7 @@ jobs:
 
       - name: Run ZAP DAST Scan
         run: |
-          docker run  -v ${GITHUB_WORKSPACE}:/zap/wrk -t owasp/zap2docker-stable zap-baseline.py \
+          docker run  -v ${GITHUB_WORKSPACE}:/zap/wrk -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
             -t https://exam-app.lptdevops.website \
             -r dast-zap-report.html \
             -J dast-zap-report.json || true
