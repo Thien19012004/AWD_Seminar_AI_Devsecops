@@ -3,7 +3,7 @@ services:
     image: thien19012004/exam-app-frontend:latest
     container_name: exam-app-frontend
     ports:
-      - "8800:80"
+      - "8080:80"
     restart: always
     labels:
       - "traefik.http.routers.exam-app-frontend-secure.rule=Host(`exam-app.lptdevops.website`)"
@@ -15,3 +15,9 @@ services:
       - "traefik.http.routers.exam-app-frontend.entrypoints=web"
       - "traefik.http.routers.exam-app-frontend.middlewares=redirect-to-https"  
       - "traefik.http.services.exam-app-frontend.loadbalancer.server.port=80"
+    networks:
+      - traefik_default
+
+networks:
+  traefik_default:
+    driver: bridge
