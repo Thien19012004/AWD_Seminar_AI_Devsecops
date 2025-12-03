@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";ddddd
+import React, { useState, useEffect } from "react";
 import authService from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import "../styles/global.css";
@@ -25,7 +25,7 @@ function ExamList() {
     handleExamList();
   }, []);
 
-  // fetch exam list every 2 minutes----------------------------
+   fetch exam list every 2 minutes----------------------------
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     handleExamList();
